@@ -1,95 +1,115 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+
+import { Spin, Alert, Typography } from 'antd'
+import { useProducts, useCategories } from '@/hooks/useProducts'
+import useProductStore from '@/store/useProductStore'
+
+const { Title, Text } = Typography
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { 
+    data: products, 
+    isLoading: productsLoading, 
+    error: productsError 
+  } = useProducts()
+  
+  const { 
+    data: categories, 
+    isLoading: categoriesLoading 
+  } = useCategories()
+  
+  const { 
+    selectedProducts, 
+    addToBasket, 
+    getTotalItems,
+    getTotalPrice 
+  } = useProductStore()
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  if (productsLoading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <Spin size="large" />
+        <div style={{ marginTop: 16 }}>
+          <Text>Ürünler yükleniyor...</Text>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+    )
+  }
+
+  if (productsError) {
+    return (
+      <Alert
+        message="Hata"
+        description={productsError.message}
+        type="error"
+        showIcon
+        style={{ margin: '20px' }}
+      />
+    )
+  }
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <Title level={1}>Products Remote - Test</Title>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <Text strong>Toplam Ürün: </Text>
+        <Text>{products?.length || 0}</Text>
+        <br />
+        
+        <Text strong>Kategoriler: </Text>
+        <Text>{categoriesLoading ? 'Yükleniyor...' : categories?.length || 0}</Text>
+        <br />
+        
+        <Text strong>Sepetteki Ürün Sayısı: </Text>
+        <Text>{getTotalItems()}</Text>
+        <br />
+        
+        <Text strong>Toplam Tutar: </Text>
+        <Text>${getTotalPrice().toFixed(2)}</Text>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
+        {products?.slice(0, 6).map(product => (
+          <div key={product.id} style={{ 
+            border: '1px solid #d9d9d9', 
+            borderRadius: '8px', 
+            padding: '16px',
+            backgroundColor: 'white'
+          }}>
+            <img 
+              src={product.image} 
+              alt={product.title}
+              style={{ width: '100%', height: '200px', objectFit: 'contain', marginBottom: '12px' }}
+            />
+            <Title level={4} style={{ marginBottom: '8px', fontSize: '16px' }}>
+              {product.title.slice(0, 50)}...
+            </Title>
+            <Text strong style={{ fontSize: '18px', color: '#1890ff' }}>
+              ${product.price}
+            </Text>
+            <br />
+            <Text type="secondary">
+              ⭐ {product.rating.rate} ({product.rating.count})
+            </Text>
+            <br />
+            <button 
+              onClick={() => addToBasket(product)}
+              style={{ 
+                marginTop: '12px',
+                padding: '8px 16px',
+                backgroundColor: '#1890ff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer'
+              }}
+            >
+              Sepete Ekle
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
-  );
+  )
 }
