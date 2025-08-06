@@ -6,6 +6,8 @@ import { useProducts } from '@/hooks/useProducts'
 import useProductStore from '@/store/useProductStore'
 import ProductList from '@/components/ProductList'
 
+import '@ant-design/v5-patch-for-react-19' 
+
 const { Header, Content } = Layout
 const { Title, Text } = Typography
 
