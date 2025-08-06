@@ -6,8 +6,8 @@ import {
     Tag,
     Space,
     InputNumber,
-    message,
-    Tooltip
+    Tooltip,
+    App
 } from 'antd'
 import {
     ShoppingCartOutlined,
@@ -22,7 +22,6 @@ import useProductStore from '@/store/useProductStore'
 import { SUCCESS_MESSAGES } from '@/utils/constants'
 
 const { Title, Text, Paragraph } = Typography
-const { Meta } = Card
 
 /**
  * ProductCard Component - Single Responsibility: Display product information
@@ -40,6 +39,9 @@ export default function ProductCard({
 }) {
     const [isImageLoading, setIsImageLoading] = useState(true)
     const [isFavorite, setIsFavorite] = useState(false)
+
+    // Use App context for message
+    const { message } = App.useApp()
 
     const {
         addToBasket,

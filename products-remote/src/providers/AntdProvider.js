@@ -1,6 +1,6 @@
 'use client'
 
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider, theme, App } from 'antd'
 import trTR from 'antd/locale/tr_TR'
 
 export default function AntdProvider({ children }) {
@@ -43,7 +43,9 @@ export default function AntdProvider({ children }) {
         },
       }}
     >
-      {children}
+      <App>
+        {children}
+      </App>
     </ConfigProvider>
   )
 }
