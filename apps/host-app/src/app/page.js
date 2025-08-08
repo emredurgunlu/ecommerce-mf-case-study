@@ -1,95 +1,74 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+
+import { Layout, Typography, Menu, theme } from 'antd'
+import { HomeOutlined, ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons'
+
+const { Header, Content, Footer } = Layout
+const { Title, Text } = Typography
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken()
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Header style={{ 
+        display: 'flex', 
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'white',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Title level={3} style={{ margin: 0, marginRight: 24, color: '#1890ff' }}>
+            E-Commerce MF
+          </Title>
+          <Menu
+            mode="horizontal"
+            defaultSelectedKeys={['home']}
+            style={{ flex: 1, minWidth: 0, border: 'none' }}
+            items={[
+              {
+                key: 'home',
+                icon: <HomeOutlined />,
+                label: 'Ana Sayfa',
+              },
+              {
+                key: 'products',
+                icon: <ShoppingOutlined />,
+                label: 'Ürünler',
+              },
+              {
+                key: 'basket',
+                icon: <ShoppingCartOutlined />,
+                label: 'Sepet',
+              },
+            ]}
+          />
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </Header>
+      <Content style={{ padding: '24px' }}>
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: '0 auto',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+          <Title level={2}>Mikro Frontend E-Ticaret Uygulaması</Title>
+          <Text>Bu uygulama, Turborepo ve monorepo yapısı kullanılarak geliştirilmiş bir mikro frontend e-ticaret uygulamasıdır.</Text>
+          
+          {/* Buraya remote uygulamalar eklenecek */}
+        </div>
+      </Content>
+      <Footer style={{ textAlign: 'center', backgroundColor: '#f0f2f5' }}>
+        E-Commerce Micro Frontend ©{new Date().getFullYear()} Created with Turborepo
+      </Footer>
+    </Layout>
+  )
 }
