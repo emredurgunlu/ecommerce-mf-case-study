@@ -11,3 +11,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+:where(.css-dev-only-do-not-override-i5s6zm).ant-input-number-sm input.ant-input-number-input {
+  text-align: center;
+}

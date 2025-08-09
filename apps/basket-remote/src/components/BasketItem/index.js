@@ -43,7 +43,7 @@ export default function BasketItem({ item, onRemove, onUpdateQuantity }) {
 
   return (
     <Card
-      style={{ marginBottom: 16 }}
+      style={{ marginBottom: 16, width: '100%' }}
       styles={{
         body: { padding: 16 },
       }}
@@ -100,7 +100,7 @@ export default function BasketItem({ item, onRemove, onUpdateQuantity }) {
                   icon={<MinusOutlined />}
                   onClick={() => handleQuantityChange(item.quantity - 1)}
                   size="small"
-                  disabled={item.quantity <= 1}
+                  disabled={item.quantity < 1}
                 />
                 <InputNumber
                   value={item.quantity}
