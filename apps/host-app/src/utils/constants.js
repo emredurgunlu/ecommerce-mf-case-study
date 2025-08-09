@@ -28,3 +28,19 @@ export const LAYOUT_CONFIG = {
 export const STORAGE_KEYS = {
   USER_PREFERENCES: 'host-app-preferences',
 }
+
+// Error Messages
+export const ERROR_MESSAGES = {
+  NETWORK_ERROR: 'Ağ hatası. Lütfen bağlantınızı kontrol edin.',
+  NOT_FOUND: 'Kaynak bulunamadı.',
+  SERVER_ERROR: 'Sunucu hatası. Lütfen daha sonra tekrar deneyin.',
+  GENERIC_ERROR: 'Beklenmeyen bir hata oluştu.',
+}
+
+// Success Messages
+export const SUCCESS_MESSAGES = {
+  PRODUCT_ADDED: 'Ürün sepete eklendi',
+  PRODUCT_REMOVED: 'Ürün sepetten çıkarıldı',
+  PRODUCT_UPDATED: 'Ürün güncellendi',
+  BASKET_CLEARED: 'Sepet temizlendi',
+}

@@ -14,7 +14,7 @@ const { Text, Title } = Typography
  */
 export default function BasketItem({ item, onRemove, onUpdateQuantity }) {
   const [isImageLoading, setIsImageLoading] = useState(true)
-  
+
   // Use App context for message
   const { message } = App.useApp()
 
@@ -44,7 +44,9 @@ export default function BasketItem({ item, onRemove, onUpdateQuantity }) {
   return (
     <Card
       style={{ marginBottom: 16 }}
-      bodyStyle={{ padding: 16 }}
+      styles={{
+        body: { padding: 16 },
+      }}
     >
       <div style={{ display: 'flex', gap: 16 }}>
         {/* Product Image */}

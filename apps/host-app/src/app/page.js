@@ -4,7 +4,9 @@ import { useState } from 'react'
 import { Layout, Typography, Menu, theme } from 'antd'
 import { HomeOutlined, ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import { useRemoteProducts } from '@/hooks/useRemoteProducts'
-import { Card, Row, Col, Spin, Alert } from 'antd'
+import ProductList from '@/components/ProductList'
+import RemoteWrapper from '@/components/RemoteWrapper'
+import { REMOTE_APPS } from '@/utils/constants'
 
 const { Header, Content, Footer } = Layout
 const { Title, Text } = Typography
@@ -78,26 +80,26 @@ export default function Home() {
         </div>
         {/* Product List Section */}
         <div style={{ maxWidth: 1200, margin: '32px auto 0', padding: 0 }}>
-          {isLoading ? (
-            <Spin size="large" />
-          ) : error ? (
-            <Alert type="error" message="Ürünler yüklenemedi" description={error.message} />
-          ) : (
-            <Row gutter={[16, 16]}>
-              {products?.map(product => (
-                <Col xs={24} sm={12} md={8} lg={6} key={product.id}>
-                  <Card
-                    hoverable
-                    title={product.title}
-                    cover={<img alt={product.title} src={product.image} style={{ height: 200, objectFit: 'contain' }} />}
-                  >
-                    <p>{product.category}</p>
-                    <p>{product.price} $</p>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          )}
+          <ProductList 
+            products={products} 
+            loading={isLoading} 
+            error={error} 
+            onProductSelect={(product) => console.log('Ürün seçildi:', product)}
+          />
+        </div>
+        
+        {/* Basket Remote Section - Gizli iframe */}
+        <div style={{ display: 'none' }}>
+          <RemoteWrapper
+            url={REMOTE_APPS.BASKET.URL}
+            name={REMOTE_APPS.BASKET.NAME}
+          >
+            <iframe 
+              src={REMOTE_APPS.BASKET.URL} 
+              title="Basket Remote" 
+              style={{ width: '100%', height: '0', border: 'none' }}
+            />
+          </RemoteWrapper>
         </div>
       </Content>
       <Footer style={{ textAlign: 'center', backgroundColor: '#f0f2f5' }}>
