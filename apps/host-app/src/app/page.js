@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Layout, Typography, Menu, theme } from 'antd'
+import { Layout, Typography, Breadcrumb, theme, Space, Button, Badge } from 'antd'
 import { HomeOutlined, ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import { useRemoteProducts } from '@/hooks/useRemoteProducts'
 import ProductList from '@/components/ProductList'
@@ -18,12 +18,25 @@ export default function Home() {
 
   const [selectedKey, setSelectedKey] = useState('home')
 
-  const handleMenuClick = (e) => {
-    setSelectedKey(e.key)
-    // İleride routing yapılacaksa burada yapılabilir
+  const { data: products, isLoading, error } = useRemoteProducts()
+
+  // Sayfa yönlendirme fonksiyonları
+  const navigateToHome = () => {
+    setSelectedKey('home')
+    // Ana sayfa zaten bu sayfa olduğu için yönlendirme yapmıyoruz
   }
 
-  const { data: products, isLoading, error } = useRemoteProducts()
+  const navigateToProducts = () => {
+    setSelectedKey('products')
+    // Products remote uygulamasına yönlendirme
+    window.open(REMOTE_APPS.PRODUCTS.URL, '_blank')
+  }
+
+  const navigateToBasket = () => {
+    setSelectedKey('basket')
+    // Basket remote uygulamasına yönlendirme
+    window.open(REMOTE_APPS.BASKET.URL, '_blank')
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -32,37 +45,54 @@ export default function Home() {
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: 'white',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        padding: '0 24px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Title level={3} style={{ margin: 0, marginRight: 24, color: '#1890ff' }}>
             E-Commerce MF
           </Title>
-          <Menu
-            mode="horizontal"
-            selectedKeys={[selectedKey]}
-            onClick={handleMenuClick}
-            style={{ flex: 1, minWidth: 0, border: 'none' }}
+          
+          {/* Breadcrumb Menü */}
+          <Breadcrumb
             items={[
               {
-                key: 'home',
-                icon: <HomeOutlined />,
-                label: 'Ana Sayfa',
+                title: (
+                  <a onClick={navigateToHome}>
+                    <HomeOutlined /> Ana Sayfa
+                  </a>
+                ),
               },
               {
-                key: 'products',
-                icon: <ShoppingOutlined />,
-                label: 'Ürünler',
-              },
-              {
-                key: 'basket',
-                icon: <ShoppingCartOutlined />,
-                label: 'Sepet',
+                title: (
+                  <a onClick={navigateToProducts}>
+                    <ShoppingOutlined /> Ürünler
+                  </a>
+                ),
               },
             ]}
           />
         </div>
+        
+        {/* Sepet Butonu - Sağda */}
+        <Space size="large">
+          <Text type="secondary">
+            Mikro Frontend E-ticaret
+          </Text>
+          
+          <Badge count={0} showZero={false}>
+            <Button
+              type="primary"
+              icon={<ShoppingCartOutlined />}
+              size="large"
+              onClick={navigateToBasket}
+            >
+              Sepet
+            </Button>
+          </Badge>
+        </Space>
       </Header>
+      
       <Content style={{ padding: '24px' }}>
         <div
           style={{
@@ -102,6 +132,7 @@ export default function Home() {
           </RemoteWrapper>
         </div>
       </Content>
+      
       <Footer style={{ textAlign: 'center', backgroundColor: '#f0f2f5' }}>
         E-Commerce Micro Frontend ©{new Date().getFullYear()} Created with Turborepo
       </Footer>
