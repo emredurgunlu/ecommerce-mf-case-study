@@ -27,6 +27,7 @@ export const LAYOUT_CONFIG = {
 // Storage Keys
 export const STORAGE_KEYS = {
   USER_PREFERENCES: 'host-app-preferences',
+  BASKET: 'host-app-basket',
 }
 
 // Error Messages

@@ -1,17 +1,25 @@
 'use client'
 
-import { Layout, Typography, Space, Badge, Button } from 'antd'
-import { ShoppingCartOutlined } from '@ant-design/icons'
+import { Layout, Typography, Space, Badge, Button, Breadcrumb } from 'antd'
+import { ShoppingCartOutlined, HomeOutlined, ShoppingOutlined } from '@ant-design/icons'
 import { useProducts } from '@/hooks/useProducts'
 import useProductStore from '@/store/useProductStore'
 import ProductList from '@/components/ProductList'
+import { REMOTE_APPS } from '@/utils/constants'
+import { useState, useEffect } from 'react'
 
 import '@ant-design/v5-patch-for-react-19' 
 
-const { Header, Content } = Layout
+const { Header, Content, Footer } = Layout
 const { Title, Text } = Typography
 
+// Statik yıl değeri - hydration hatasını önlemek için
+const CURRENT_YEAR = 2024
+
 export default function Home() {
+  // Client-side state for basket count to prevent hydration mismatch
+  const [basketCount, setBasketCount] = useState(0)
+  
   const {
     data: products,
     isLoading,
@@ -20,12 +28,30 @@ export default function Home() {
 
   const {
     getTotalItems,
-    getFormattedTotalPrice
+    selectedProducts, // Sepetteki ürünleri doğrudan izlemek için
   } = useProductStore()
+
+  // Update basket count after component mounts (client-side only)
+  // selectedProducts'ı bağımlılık dizisine ekleyerek sepet değişikliklerini izliyoruz
+  useEffect(() => {
+    setBasketCount(getTotalItems())
+  }, [getTotalItems, selectedProducts]) // selectedProducts'ı izleyerek sepet değişikliklerini yakalıyoruz
 
   const handleProductSelect = (product) => {
     console.log('Ürün seçildi:', product)
     // Burada ürün detay sayfasına yönlendirme yapabilirsin
+  }
+
+  // Sayfa yönlendirme fonksiyonları
+  const navigateToHome = () => {
+    // Ana sayfaya yönlendirme
+    window.open('http://localhost:3000', '_blank')
+  }
+
+  const navigateToProducts = () => {
+    // Products remote uygulaması zaten bu sayfa olduğu için yönlendirme yapmıyoruz
+    // veya sayfayı yenileyebiliriz
+    window.location.reload()
   }
 
   return (
@@ -39,24 +65,45 @@ export default function Home() {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
-          Products Remote
-        </Title>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Title level={3} style={{ margin: 0, marginRight: 24, color: '#1890ff' }}>
+            Products Remote
+          </Title>
+
+          {/* Breadcrumb Menü */}
+          <Breadcrumb
+            items={[
+              {
+                title: (
+                  <a onClick={navigateToHome}>
+                    <HomeOutlined /> Ana Sayfa
+                  </a>
+                ),
+              },
+              {
+                title: (
+                  <a onClick={navigateToProducts}>
+                    <ShoppingOutlined /> Ürünler
+                  </a>
+                ),
+              },
+            ]}
+          />
+        </div>
 
         <Space size="large">
           <Text type="secondary">
             Mikro Frontend E-ticaret
           </Text>
 
-          {/* Basket Info */}
-          <Badge count={getTotalItems()} showZero={false}>
+          {/* Basket Info - Sadece ikon ve badge */}
+          <Badge count={basketCount} showZero={false}>
             <Button
               type="primary"
               icon={<ShoppingCartOutlined />}
               size="large"
-            >
-              {getFormattedTotalPrice()}
-            </Button>
+              onClick={() => window.open('http://localhost:3002', '_blank')}
+            />
           </Badge>
         </Space>
       </Header>
@@ -79,6 +126,11 @@ export default function Home() {
           />
         </div>
       </Content>
+
+      {/* Footer */}
+      <Footer style={{ textAlign: 'center', backgroundColor: '#f0f2f5' }}>
+        Products Remote ©{CURRENT_YEAR} Created with Next.js
+      </Footer>
     </Layout>
   )
 }

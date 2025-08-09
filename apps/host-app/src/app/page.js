@@ -1,15 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Layout, Typography, Breadcrumb, theme, Space, Button, Badge } from 'antd'
 import { HomeOutlined, ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import { useRemoteProducts } from '@/hooks/useRemoteProducts'
 import ProductList from '@/components/ProductList'
 import RemoteWrapper from '@/components/RemoteWrapper'
 import { REMOTE_APPS } from '@/utils/constants'
+import useProductStore from '@/store/useProductStore'
+import { useBasketIntegration } from '@/hooks/useBasketIntegration'
 
 const { Header, Content, Footer } = Layout
 const { Title, Text } = Typography
+
+// Statik yıl değeri - hydration hatasını önlemek için
+const CURRENT_YEAR = 2024
 
 export default function Home() {
   const {
@@ -17,8 +22,23 @@ export default function Home() {
   } = theme.useToken()
 
   const [selectedKey, setSelectedKey] = useState('home')
+  // Client-side state for basket count to prevent hydration mismatch
+  const [basketCount, setBasketCount] = useState(0)
 
   const { data: products, isLoading, error } = useRemoteProducts()
+
+  const {
+    getTotalItems,
+    selectedProducts,
+  } = useProductStore()
+
+  // Update basket count after component mounts (client-side only)
+  useEffect(() => {
+    const newBasketCount = getTotalItems()
+    console.log('Basket count güncellendi:', newBasketCount)
+    console.log('Selected products:', selectedProducts)
+    setBasketCount(newBasketCount)
+  }, [getTotalItems, selectedProducts])
 
   // Sayfa yönlendirme fonksiyonları
   const navigateToHome = () => {
@@ -74,40 +94,24 @@ export default function Home() {
           />
         </div>
         
-        {/* Sepet Butonu - Sağda */}
+        {/* Sepet Butonu - Sadece ikon ve badge */}
         <Space size="large">
           <Text type="secondary">
             Mikro Frontend E-ticaret
           </Text>
           
-          <Badge count={0} showZero={false}>
+          <Badge count={basketCount} showZero={false}>
             <Button
               type="primary"
               icon={<ShoppingCartOutlined />}
               size="large"
               onClick={navigateToBasket}
-            >
-              Sepet
-            </Button>
+            />
           </Badge>
         </Space>
       </Header>
       
       <Content style={{ padding: '24px' }}>
-        <div
-          style={{
-            maxWidth: 1200,
-            margin: '0 auto',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-          }}
-        >
-          <Title level={2}>Mikro Frontend E-Ticaret Uygulaması</Title>
-          <Text>Bu uygulama, Turborepo ve monorepo yapısı kullanılarak geliştirilmiş bir mikro frontend e-ticaret uygulamasıdır.</Text>
-        </div>
         {/* Product List Section */}
         <div style={{ maxWidth: 1200, margin: '32px auto 0', padding: 0 }}>
           <ProductList 
@@ -134,7 +138,7 @@ export default function Home() {
       </Content>
       
       <Footer style={{ textAlign: 'center', backgroundColor: '#f0f2f5' }}>
-        E-Commerce Micro Frontend ©{new Date().getFullYear()} Created with Turborepo
+        E-Commerce Micro Frontend ©{CURRENT_YEAR} Created with Turborepo
       </Footer>
     </Layout>
   )

@@ -2,6 +2,7 @@ import { Card, Button, Typography, Tag, Space, App } from 'antd'
 import { ShoppingCartOutlined, EyeOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { useBasketIntegration } from '@/hooks/useBasketIntegration'
+import useProductStore from '@/store/useProductStore'
 import { SUCCESS_MESSAGES } from '@/utils/constants'
 
 const { Title, Text, Paragraph } = Typography
@@ -14,7 +15,8 @@ const { Title, Text, Paragraph } = Typography
  */
 export default function ProductCard({ product, onViewDetails }) {
   const [isImageLoading, setIsImageLoading] = useState(true)
-  const { addToBasket } = useBasketIntegration()
+  const { addToBasket: addToBasketRemote } = useBasketIntegration()
+  const { addToBasket: addToBasketLocal } = useProductStore()
   
   // Use App context for message
   const { message } = App.useApp()
@@ -38,7 +40,14 @@ export default function ProductCard({ product, onViewDetails }) {
 
   // Handle add to basket
   const handleAddToBasket = () => {
-    addToBasket(product)
+    // Hem local store'a hem de remote'a ekle
+    addToBasketLocal(product)
+    addToBasketRemote(product)
+    
+    // Debug için console.log ekleyelim
+    console.log('Ürün sepete eklendi:', product.title)
+    console.log('Local store güncellendi')
+    
     message.success(SUCCESS_MESSAGES.PRODUCT_ADDED)
   }
 
