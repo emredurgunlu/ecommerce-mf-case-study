@@ -40,3 +40,6 @@ a {
     color-scheme: dark;
   }
 }
+:where(.css-dev-only-do-not-override-i5s6zm).ant-input-number-sm input.ant-input-number-input {
+  text-align: center;
+}

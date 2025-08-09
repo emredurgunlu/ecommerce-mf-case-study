@@ -131,7 +131,7 @@ export default function ProductCard({
                 icon={<MinusOutlined />}
                 onClick={() => handleQuantityChange(quantityInBasket - 1)}
                 size="small"
-                disabled={quantityInBasket <= 1}
+                disabled={quantityInBasket < 1}
             />
             <InputNumber
                 value={quantityInBasket}

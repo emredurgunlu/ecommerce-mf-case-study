@@ -230,6 +230,13 @@ export default function ProductList({
           {viewMode === 'grid' ? (
             <Row gutter={GRID_CONFIG.GUTTER}>
               {paginatedData.map(product => (
+                // Ant Design'ın grid sistemi 24 sütunludur. Yani:
+                // xs={24} → Mobil cihazlarda (ekran < 576px) ürün tüm satırı kaplar (1 ürün/satır).
+                // sm={12} → Küçük ekranlarda (≥576px) 12 sütun kaplar → 2 ürün/satır.
+                // md={8} → Orta ekranlarda (≥768px) 8 sütun kaplar → 3 ürün/satır.
+                // lg={6} → Büyük ekranlarda (≥992px) 6 sütun kaplar → 4 ürün/satır.
+                // xl={6} → Daha büyük ekranlarda (≥1200px) yine 4 ürün/satır.
+                // xxl={6} → Ekstra büyük ekranlarda (≥1600px) 4 sütun kaplar → 6 ürün/satır.
                 <Col
                   key={product.id}
                   xs={24}
@@ -237,7 +244,7 @@ export default function ProductList({
                   md={8}
                   lg={6}
                   xl={6}
-                  xxl={4}
+                  xxl={6}
                   style={{ marginBottom: 16 }}
                 >
                   <ProductCard
