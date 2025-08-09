@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { Layout, Typography, Menu, theme } from 'antd'
 import { HomeOutlined, ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 
@@ -10,6 +11,13 @@ export default function Home() {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
+
+  const [selectedKey, setSelectedKey] = useState('home')
+
+  const handleMenuClick = (e) => {
+    setSelectedKey(e.key)
+    // İleride routing yapılacaksa burada yapılabilir
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -26,7 +34,8 @@ export default function Home() {
           </Title>
           <Menu
             mode="horizontal"
-            defaultSelectedKeys={['home']}
+            selectedKeys={[selectedKey]}
+            onClick={handleMenuClick}
             style={{ flex: 1, minWidth: 0, border: 'none' }}
             items={[
               {
@@ -62,8 +71,6 @@ export default function Home() {
         >
           <Title level={2}>Mikro Frontend E-Ticaret Uygulaması</Title>
           <Text>Bu uygulama, Turborepo ve monorepo yapısı kullanılarak geliştirilmiş bir mikro frontend e-ticaret uygulamasıdır.</Text>
-          
-          {/* Buraya remote uygulamalar eklenecek */}
         </div>
       </Content>
       <Footer style={{ textAlign: 'center', backgroundColor: '#f0f2f5' }}>

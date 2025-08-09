@@ -2,7 +2,10 @@
   "name": "my-monorepo",
   "version": "1.0.0",
   "packageManager": "npm@10.9.2",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev:all": "turbo run dev --parallel",
     "build": "turbo run build",
@@ -15,6 +18,7 @@
     "zustand": "^5.0.7"
   },
   "devDependencies": {
+    "cross-env": "^10.0.0",
     "turbo": "^2.5.5"
   }
 }
