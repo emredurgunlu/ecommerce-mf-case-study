@@ -1,16 +1,19 @@
 // src/app/api/products/route.js
-import { API_CONFIG } from '../../../utils/constants.js'
+import { APP_CONFIG } from '../../../utils/constants.js'
+
+const BASE_URL = process.env.API_URL || 'https://fakestoreapi.com'
 
 export async function GET() {
   try {
-    const res = await fetch(`${API_CONFIG.BASE_URL}/products`);
+
+    const res = await fetch(`${BASE_URL}/products`);
 
     if (!res.ok) {
       return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
         status: 500,
         headers: {
           'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production'
-            ? API_CONFIG.HOST_URL
+            ? APP_CONFIG.HOST_URL
             : 'http://localhost:3000',
           'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
           'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization',
@@ -19,13 +22,14 @@ export async function GET() {
     }
 
     const data = await res.json();
-
+    console.log('process.env.NODE_ENV:', process.env.NODE_ENV) // ← bunu ekle
+    console.log('APP_CONFIG.HOST_URL', process.env.NODE_ENV) // ← bunu ekle
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production'
-          ? API_CONFIG.HOST_URL
+          ? APP_CONFIG.HOST_URL
           : 'http://localhost:3000',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization',
@@ -36,7 +40,7 @@ export async function GET() {
       status: 500,
       headers: {
         'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production'
-          ? API_CONFIG.HOST_URL
+          ? APP_CONFIG.HOST_URL
           : 'http://localhost:3000',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization',

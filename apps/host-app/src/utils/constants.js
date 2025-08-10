@@ -4,8 +4,24 @@ export const APP_CONFIG = {
   VERSION: process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0',
   PORT: process.env.NEXT_PUBLIC_PORT || 3000,
   HOST_URL:process.env.NEXT_PUBLIC_HOST_URL || 'http://localhost:3001',
+  BASE_URL:process.env.NEXT_PUBLIC_API_URL || 'https://fakestoreapi.com'
 }
 
+// Remote Apps Configuration
+export const REMOTE_APPS = {
+  PRODUCTS: {
+    NAME: 'products-remote',
+    URL: process.env.NODE_ENV === 'production' 
+      ? process.env.NEXT_PUBLIC_PRODUCTS_URL || 'https://ecommerce-mf-case-study-products-re.vercel.app'
+      : 'http://localhost:3001'
+  },
+  BASKET: {
+    NAME: 'basket-remote',
+    URL: process.env.NODE_ENV === 'production'
+      ? process.env.NEXT_PUBLIC_BASKET_URL || 'https://ecommerce-mf-case-study-basket-remo.vercel.app'
+      : 'http://localhost:3002'
+  }
+}
 
 // Layout Configuration
 export const LAYOUT_CONFIG = {

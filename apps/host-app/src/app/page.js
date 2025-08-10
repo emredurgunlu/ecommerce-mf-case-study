@@ -46,6 +46,8 @@ export default function Home() {
     selectedProducts,
   } = useProductStore()
 
+  const { basketIframeRef } = useBasketIntegration()
+
   const isMobile = !screens.md
 
   // Initialize URLs on client side
@@ -193,6 +195,7 @@ export default function Home() {
             name={REMOTE_APPS.BASKET.NAME}
           >
             <iframe 
+              ref={basketIframeRef}
               src={REMOTE_APPS.BASKET.URL} 
               title="Basket Remote" 
               style={{ width: '100%', height: '0', border: 'none' }}
