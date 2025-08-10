@@ -15,7 +15,7 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Origin',
             value: process.env.NODE_ENV === 'production' 
-              ? 'https://ecommerce-mf-case-study-host-app.vercel.app'
+              ? 'https://ecommerce-mf-case-study-host-app.vercel.app/'
               : 'http://localhost:3000', // host-app
           },
           {
