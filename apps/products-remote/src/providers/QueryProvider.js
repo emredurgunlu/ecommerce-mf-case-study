@@ -20,6 +20,8 @@ export default function QueryProvider({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
+      {/* ReactQueryDevtools ve ReactQueryRewind development aşamasını kolaylaştırmak amaçlı React Query için geliştirme aracıdır.
+      biri npm install @tanstack/react-query-devtools şeklinde yüklenir diğeri ise bir chrome eklentisidir. */}
       {/* {process.env.NODE_ENV === 'development' && (
         <>
           <ReactQueryDevtools initialIsOpen={false} />
