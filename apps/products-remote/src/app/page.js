@@ -51,19 +51,25 @@ export default function Home() {
   const navigateToHome = () => {
     setDrawerOpen(false)
     // Ana sayfaya yönlendirme
-    window.open('http://localhost:3000', '_blank')
+    if (typeof window !== 'undefined') {
+      window.open('http://localhost:3000', '_blank')
+    }
   }
 
   const navigateToProducts = () => {
     setDrawerOpen(false)
     // Products remote uygulaması zaten bu sayfa olduğu için yönlendirme yapmıyoruz
     // veya sayfayı yenileyebiliriz
-    window.location.reload()
+    if (typeof window !== 'undefined') {
+      window.location.reload()
+    }
   }
 
   const navigateToBasket = () => {
     setDrawerOpen(false)
-    window.open('http://localhost:3002', '_blank')
+    if (typeof window !== 'undefined') {
+      window.open('http://localhost:3002', '_blank')
+    }
   }
 
   return (
