@@ -8,11 +8,11 @@ export const APP_CONFIG = {
 // Remote Apps
 export const REMOTE_APPS = {
   PRODUCTS: {
-    URL: process.env.NEXT_PUBLIC_PRODUCTS_REMOTE_URL || 'http://localhost:3001',
+    URL: process.env.NEXT_PUBLIC_PRODUCTS_URL || 'http://localhost:3001',
     NAME: 'products-remote',
   },
   BASKET: {
-    URL: process.env.NEXT_PUBLIC_BASKET_REMOTE_URL || 'http://localhost:3002',
+    URL: process.env.NEXT_PUBLIC_BASKET_URL || 'http://localhost:3002',
     NAME: 'basket-remote',
   },
 }
