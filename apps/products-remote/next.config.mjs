@@ -4,7 +4,7 @@
 // export default nextConfig;
 
 
-// Geliştirme ortamı için CORS çözümü
+// Geliştirme ve production ortamı için CORS çözümü
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async headers() {
@@ -14,7 +14,9 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'http://localhost:3000', // host-app
+            value: process.env.NODE_ENV === 'production' 
+              ? 'https://ecommerce-mf-case-study-host-app.vercel.app'
+              : 'http://localhost:3000', // host-app
           },
           {
             key: 'Access-Control-Allow-Methods',
