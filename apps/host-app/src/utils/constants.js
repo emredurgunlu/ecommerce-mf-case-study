@@ -3,19 +3,9 @@ export const APP_CONFIG = {
   NAME: process.env.NEXT_PUBLIC_APP_NAME || 'host-app',
   VERSION: process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0',
   PORT: process.env.NEXT_PUBLIC_PORT || 3000,
+  HOST_URL:process.env.NEXT_PUBLIC_HOST_URL || 'http://localhost:3001',
 }
 
-// Remote Apps
-export const REMOTE_APPS = {
-  PRODUCTS: {
-    URL: process.env.NEXT_PUBLIC_PRODUCTS_URL || 'http://localhost:3001',
-    NAME: 'products-remote',
-  },
-  BASKET: {
-    URL: process.env.NEXT_PUBLIC_BASKET_URL || 'http://localhost:3002',
-    NAME: 'basket-remote',
-  },
-}
 
 // Layout Configuration
 export const LAYOUT_CONFIG = {

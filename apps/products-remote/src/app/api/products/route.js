@@ -1,5 +1,5 @@
 // src/app/api/products/route.js
-import { HOST_URL,API_CONFIG } from '../../../utils/constants.js'
+import { API_CONFIG } from '../../../utils/constants.js'
 
 export async function GET() {
   try {

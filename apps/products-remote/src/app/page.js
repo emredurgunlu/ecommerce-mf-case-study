@@ -5,7 +5,6 @@ import { ShoppingCartOutlined, HomeOutlined, ShoppingOutlined, MenuOutlined } fr
 import { useProducts } from '@/hooks/useProducts'
 import useProductStore from '@/store/useProductStore'
 import ProductList from '@/components/ProductList'
-import { REMOTE_APPS } from '@/utils/constants'
 import { useState, useEffect } from 'react'
 
 import '@ant-design/v5-patch-for-react-19' 
