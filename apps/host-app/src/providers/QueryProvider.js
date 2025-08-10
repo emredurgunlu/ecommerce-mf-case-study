@@ -18,6 +18,12 @@ export default function QueryProvider({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
+        {/* {process.env.NODE_ENV === 'development' && (
+        <>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <ReactQueryRewind />
+        </>
+      )} */}
     </QueryClientProvider>
   )
 }
