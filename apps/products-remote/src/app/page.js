@@ -17,11 +17,23 @@ const { useBreakpoint } = Grid
 // Statik yıl değeri - hydration hatasını önlemek için
 const CURRENT_YEAR = 2024
 
+// Environment-based URLs
+const getAppUrls = () => {
+  if (typeof window === 'undefined') return {}
+  
+  const isProduction = window.location.hostname !== 'localhost'
+  
+  return {
+    HOST_URL: isProduction ? process.env.NEXT_PUBLIC_HOST_URL || 'https://your-host-app.vercel.app' : 'http://localhost:3000',
+    BASKET_URL: isProduction ? process.env.NEXT_PUBLIC_BASKET_URL || 'https://your-basket-app.vercel.app' : 'http://localhost:3002'
+  }
+}
+
 export default function Home() {
   const screens = useBreakpoint()
   const [drawerOpen, setDrawerOpen] = useState(false)
-  // Client-side state for basket count to prevent hydration mismatch
   const [basketCount, setBasketCount] = useState(0)
+  const [appUrls, setAppUrls] = useState({})
   
   const {
     data: products,
@@ -31,35 +43,34 @@ export default function Home() {
 
   const {
     getTotalItems,
-    selectedProducts, // Sepetteki ürünleri doğrudan izlemek için
+    selectedProducts,
   } = useProductStore()
 
   const isMobile = !screens.md
 
-  // Update basket count after component mounts (client-side only)
-  // selectedProducts'ı bağımlılık dizisine ekleyerek sepet değişikliklerini izliyoruz
+  // Initialize URLs on client side
+  useEffect(() => {
+    setAppUrls(getAppUrls())
+  }, [])
+
   useEffect(() => {
     setBasketCount(getTotalItems())
-  }, [getTotalItems, selectedProducts]) // selectedProducts'ı izleyerek sepet değişikliklerini yakalıyoruz
+  }, [getTotalItems, selectedProducts])
 
   const handleProductSelect = (product) => {
     console.log('Ürün seçildi:', product)
-    // Burada ürün detay sayfasına yönlendirme yapabilirsin
   }
 
   // Sayfa yönlendirme fonksiyonları
   const navigateToHome = () => {
     setDrawerOpen(false)
-    // Ana sayfaya yönlendirme
-    if (typeof window !== 'undefined') {
-      window.open('http://localhost:3000', '_blank')
+    if (typeof window !== 'undefined' && appUrls.HOST_URL) {
+      window.open(appUrls.HOST_URL, '_blank')
     }
   }
 
   const navigateToProducts = () => {
     setDrawerOpen(false)
-    // Products remote uygulaması zaten bu sayfa olduğu için yönlendirme yapmıyoruz
-    // veya sayfayı yenileyebiliriz
     if (typeof window !== 'undefined') {
       window.location.reload()
     }
@@ -67,8 +78,8 @@ export default function Home() {
 
   const navigateToBasket = () => {
     setDrawerOpen(false)
-    if (typeof window !== 'undefined') {
-      window.open('http://localhost:3002', '_blank')
+    if (typeof window !== 'undefined' && appUrls.BASKET_URL) {
+      window.open(appUrls.BASKET_URL, '_blank')
     }
   }
 

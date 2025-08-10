@@ -113,7 +113,11 @@ export default function ProductList({
         type="error"
         showIcon
         action={
-          <Button size="small" onClick={() => window.location.reload()}>
+          <Button size="small" onClick={() => {
+            if (typeof window !== 'undefined') {
+              window.location.reload()
+            }
+          }}>
             Tekrar Dene
           </Button>
         }

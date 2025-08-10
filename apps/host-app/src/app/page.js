@@ -14,8 +14,19 @@ const { Header, Content, Footer } = Layout
 const { Title, Text } = Typography
 const { useBreakpoint } = Grid
 
-// Statik yıl değeri - hydration hatasını önlemek için
 const CURRENT_YEAR = 2024
+
+// Environment-based URLs
+const getAppUrls = () => {
+  if (typeof window === 'undefined') return {}
+  
+  const isProduction = window.location.hostname !== 'localhost'
+  
+  return {
+    PRODUCTS_URL: isProduction ? process.env.NEXT_PUBLIC_PRODUCTS_URL || 'https://your-products-app.vercel.app' : REMOTE_APPS.PRODUCTS.URL,
+    BASKET_URL: isProduction ? process.env.NEXT_PUBLIC_BASKET_URL || 'https://your-basket-app.vercel.app' : REMOTE_APPS.BASKET.URL
+  }
+}
 
 export default function Home() {
   const {
@@ -25,8 +36,8 @@ export default function Home() {
   const screens = useBreakpoint()
   const [selectedKey, setSelectedKey] = useState('home')
   const [drawerOpen, setDrawerOpen] = useState(false)
-  // Client-side state for basket count to prevent hydration mismatch
   const [basketCount, setBasketCount] = useState(0)
+  const [appUrls, setAppUrls] = useState({})
 
   const { data: products, isLoading, error } = useRemoteProducts()
 
@@ -37,7 +48,11 @@ export default function Home() {
 
   const isMobile = !screens.md
 
-  // Update basket count after component mounts (client-side only)
+  // Initialize URLs on client side
+  useEffect(() => {
+    setAppUrls(getAppUrls())
+  }, [])
+
   useEffect(() => {
     const newBasketCount = getTotalItems()
     console.log('Basket count güncellendi:', newBasketCount)
@@ -45,25 +60,25 @@ export default function Home() {
     setBasketCount(newBasketCount)
   }, [getTotalItems, selectedProducts])
 
-  // Sayfa yönlendirme fonksiyonları
   const navigateToHome = () => {
     setSelectedKey('home')
     setDrawerOpen(false)
-    // Ana sayfa zaten bu sayfa olduğu için yönlendirme yapmıyoruz
   }
 
   const navigateToProducts = () => {
     setSelectedKey('products')
     setDrawerOpen(false)
-    // Products remote uygulamasına yönlendirme
-    window.open(REMOTE_APPS.PRODUCTS.URL, '_blank')
+    if (typeof window !== 'undefined' && appUrls.PRODUCTS_URL) {
+      window.open(appUrls.PRODUCTS_URL, '_blank')
+    }
   }
 
   const navigateToBasket = () => {
     setSelectedKey('basket')
     setDrawerOpen(false)
-    // Basket remote uygulamasına yönlendirme
-    window.open(REMOTE_APPS.BASKET.URL, '_blank')
+    if (typeof window !== 'undefined' && appUrls.BASKET_URL) {
+      window.open(appUrls.BASKET_URL, '_blank')
+    }
   }
 
   return (

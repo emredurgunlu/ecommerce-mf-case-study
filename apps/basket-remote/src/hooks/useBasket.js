@@ -1,11 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useBasketStore from '../store/useBasketStore'
 
-/**
- * Custom hook for basket operations
- * Single Responsibility: Handles basket operations and window messaging
- */
 export const useBasket = () => {
+  const [allowedOrigins, setAllowedOrigins] = useState([])
+  
   const {
     basketItems,
     addToBasket,
@@ -17,14 +15,33 @@ export const useBasket = () => {
     getFormattedTotalPrice
   } = useBasketStore()
 
-  // Listen for messages from host app
+  // Set allowed origins based on environment
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isProduction = window.location.hostname !== 'localhost'
+      
+      if (isProduction) {
+        setAllowedOrigins([
+          window.location.origin,
+          process.env.REACT_APP_HOST_URL || 'https://your-host-app.vercel.app',
+          process.env.REACT_APP_PRODUCTS_URL || 'https://your-products-app.vercel.app'
+        ])
+      } else {
+        setAllowedOrigins([
+          window.location.origin,
+          'http://localhost:3000',
+          'http://localhost:3001'
+        ])
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const handleMessage = (event) => {
       // Security check - only accept messages from trusted origins
-      // In production, you would check against your actual host domain
-      if (event.origin !== window.location.origin && 
-          event.origin !== 'http://localhost:3000' &&
-          event.origin !== 'http://localhost:3001') {
+      if (!allowedOrigins.includes(event.origin)) {
         return
       }
 
@@ -44,16 +61,17 @@ export const useBasket = () => {
           clearBasket()
           break
         case 'GET_BASKET_STATE':
-          // Send basket state back to host
-          window.parent.postMessage({
-            type: 'BASKET_STATE',
-            payload: {
-              items: basketItems,
-              totalItems: getTotalItems(),
-              totalPrice: getTotalPrice(),
-              formattedTotalPrice: getFormattedTotalPrice()
-            }
-          }, '*')
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'BASKET_STATE',
+              payload: {
+                items: basketItems,
+                totalItems: getTotalItems(),
+                totalPrice: getTotalPrice(),
+                formattedTotalPrice: getFormattedTotalPrice()
+              }
+            }, '*')
+          }
           break
         default:
           break
@@ -72,7 +90,7 @@ export const useBasket = () => {
     return () => {
       window.removeEventListener('message', handleMessage)
     }
-  }, [basketItems, addToBasket, removeFromBasket, updateQuantity, clearBasket, getTotalItems, getTotalPrice, getFormattedTotalPrice])
+  }, [allowedOrigins, basketItems, addToBasket, removeFromBasket, updateQuantity, clearBasket, getTotalItems, getTotalPrice, getFormattedTotalPrice])
 
   return {
     basketItems,
