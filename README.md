@@ -1,16 +1,25 @@
-
 # E-commerce Micro Frontend Case Study
 
-Bu proje, SOLID prensipleri ve 12 Faktör Uygulaması esas alınarak, Kayra Export için hazırlanmış, mikro frontend mimarisi ile geliştirilmiş bir e-ticaret frontend uygulama demosudur.
+Bu proje, SOLID prensipleri ve 12 Faktör Uygulaması esas alınarak, mikro frontend mimarisi ile geliştirilmiş bir e-ticaret frontend uygulama demosudur.
 
 ## Proje Yapısı
 
 ecommerce-mf-case-study/  
 │  
-├── host-app/ --> Next.js tabanlı ana uygulama   
-├── products-remote/ --> Ürün listesini gösteren Next.js tabanlı remote uygulaması  
-├── basket-remote/ --> Sepeti yöneten React tabanlı remote uygulama  
+├── host-app/ --> Next.js tabanlı ana uygulama - Tüm mikro frontend'leri bir araya getiren ve yöneten merkezi uygulama  
+├── products-remote/ --> Ürün listesini gösteren Next.js tabanlı remote uygulaması 
+├── basket-remote/ --> Sepeti yöneten React tabanlı remote uygulama 
+## Veri Akışı
 
+### Host App - Basket Remote Arası Veri Akışı
+1. Host uygulaması, `useBasketIntegration` hook'u aracılığıyla basket-remote ile iletişim kurar.
+2. Sepet işlemleri (ürün ekleme/çıkarma, miktar güncelleme) `window.postMessage` API'si kullanılarak iframe üzerinden yapılır.
+3. Basket-remote, kendi state'ini güncelledikten sonra `BASKET_STATE_UPDATE` mesajı ile host uygulamasını bilgilendirir.
+4. Host uygulaması, sepet durumunu kendi state'inde (Zustand store) tutar ve gerekli bileşenlere dağıtır.
+
+### Host App - Products Remote Arası Veri Akışı
+1. Host uygulaması, products-remote'u bir iframe içinde yükler.
+2. Ürün listesi  products-remote tarafından api/products aracılığı ile yönetilir.
 
 ## Kullanılan Teknolojiler
 
@@ -21,7 +30,6 @@ ecommerce-mf-case-study/
 - React Query
 - Webpack 5 Module Federation
 - Fake Store API (https://fakestoreapi.com/)
-- Docker
 
 https://react.dev/learn/creating-a-react-app#full-stack-frameworks linkinde şu bilgiler yer almaktadır:
 "If you want to build a new app or website with React, we recommend starting with a framework.
@@ -47,14 +55,14 @@ Bu nedenlerle projede Zustand ve React Query tercih ettim.
 
 Microfrontend mimarisi için Module Federation normalde bu paketle yapılır: https://www.npmjs.com/package/@module-federation/nextjs-mf
 Fakat bu linkten görüleceği üzere https://github.com/module-federation/core/issues/3153
-module-federation paketi next js için artık destek vermemekte ve hatta aralarında bir husumet olmalı ki şu ifadeyi kullanmaktadır:
+module-federation paketi next js için artık destek vermemekte ve hatta husumetten dolayı şu ifadeyi kullanmaktadır:
 "If you are exploring microfrontends, do not use Next.js! It is a hostile framework and Vercel is an adversary of federation"
 
 Bu nedenle microfrontend mimarisi için Turborepo + Monorepo tercih ettim:
 https://vercel.com/docs/monorepos
 https://turborepo.com/ 
 
-Uygulamalar şu şekilde ayrı ayrı build edilip çalıştırılabilir:
+Uygulamalar şu şekilde ayrı ayrı çalıştırılabilir:
 ecommerce-mf-case-study\apps\basket-remote
 npm run dev 
 ecommerce-mf-case-study\apps\host-app
