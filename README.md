@@ -6,9 +6,9 @@ Bu proje, SOLID prensipleri ve 12 Faktör Uygulaması esas alınarak, mikro fron
 
 ecommerce-mf-case-study/  
 │  
-├── host-app/ --> Next.js tabanlı ana uygulama - Tüm mikro frontend'leri bir araya getiren ve yöneten merkezi uygulama  
-├── products-remote/ --> Ürün listesini gösteren Next.js tabanlı remote uygulaması 
-├── basket-remote/ --> Sepeti yöneten React tabanlı remote uygulama 
+├── host-app/ --> Next.js tabanlı ana uygulama - Tüm mikro frontend'leri bir araya getiren ve yöneten merkezi uygulama    
+├── products-remote/ --> Ürün listesini gösteren Next.js tabanlı remote uygulaması   
+├── basket-remote/ --> Sepeti yöneten React tabanlı remote uygulama   
 ## Veri Akışı
 
 ### Host App - Basket Remote Arası Veri Akışı
@@ -73,16 +73,16 @@ npm run dev
 Ayrıca ana dizinde ecommerce-mf-case-study\ tek komut ile 3 ü birden de çalıştırılabilir:
 npx turbo run dev --parallel
 
-responsive tasarım için bu şekilde açıklama ekledim:
-// Ant Design'ın grid sistemi 24 sütunludur. Yani:
-// xs={24} → Mobil cihazlarda (ekran < 576px) ürün tüm satırı kaplar (1 ürün/satır).
-// sm={12} → Küçük ekranlarda (≥576px) 12 sütun kaplar → 2 ürün/satır.
-// md={8} → Orta ekranlarda (≥768px) 8 sütun kaplar → 3 ürün/satır.
-// lg={6} → Büyük ekranlarda (≥992px) 6 sütun kaplar → 4 ürün/satır.
-// xl={6} → Daha büyük ekranlarda (≥1200px) yine 4 ürün/satır.
-// xxl={6} → Ekstra büyük ekranlarda (≥1600px) 4 sütun kaplar → 6 ürün/satır.	
+responsive tasarım için bu şekilde açıklama ekledim:  
+// Ant Design'ın grid sistemi 24 sütunludur. Yani:  
+// xs={24} → Mobil cihazlarda (ekran < 576px) ürün tüm satırı kaplar (1 ürün/satır).  
+// sm={12} → Küçük ekranlarda (≥576px) 12 sütun kaplar → 2 ürün/satır.  
+// md={8} → Orta ekranlarda (≥768px) 8 sütun kaplar → 3 ürün/satır.  
+// lg={6} → Büyük ekranlarda (≥992px) 6 sütun kaplar → 4 ürün/satır.  
+// xl={6} → Daha büyük ekranlarda (≥1200px) yine 4 ürün/satır.  
+// xxl={6} → Ekstra büyük ekranlarda (≥1600px) 4 sütun kaplar → 6 ürün/satır.  	
 
-Ayrıca responsive tasarım için üstteki nav bar menü mobil ekranlarda hamburger menüye dönüşmektedir.  
+Ayrıca responsive tasarım için üstteki nav bar menü mobil ekranlarda hamburger menüye dönüşmektedir.    
 
 
 ![ezgif-7c7adb7a85a3e8](https://github.com/user-attachments/assets/156a9e7e-f92c-4359-b6a0-872aaac1f20c)
