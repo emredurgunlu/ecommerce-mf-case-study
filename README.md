@@ -82,4 +82,9 @@ responsive tasarım için bu şekilde açıklama ekledim:
 // xl={6} → Daha büyük ekranlarda (≥1200px) yine 4 ürün/satır.
 // xxl={6} → Ekstra büyük ekranlarda (≥1600px) 4 sütun kaplar → 6 ürün/satır.	
 
-Ayrıca responsive tasarım için üstteki nav bar menü mobil ekranlarda hamburger menüye dönüşmektedir.
+Ayrıca responsive tasarım için üstteki nav bar menü mobil ekranlarda hamburger menüye dönüşmektedir.  
+
+
+![ezgif-7c7adb7a85a3e8](https://github.com/user-attachments/assets/156a9e7e-f92c-4359-b6a0-872aaac1f20c)
+
+
